@@ -1,0 +1,188 @@
+<html>
+  <head>
+    <title>USD to CAD</title>
+    <meta name="viewport" content="width=400, initial-scale=1" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      input[type="number"] {
+        width: 100px;
+      }
+
+      output {
+        font-weight: bold;
+        font-size: 32px;
+      }
+
+      table,
+      th,
+      td {
+        border: 1px solid;
+      }
+
+      table {
+        border-collapse: collapse;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      🇺🇸
+      <input type="number" inputmode="decimal" />
+      USD
+    </div>
+    <output> 🇨🇦 $0.00 CAD </output>
+    <div style="display: flex">
+      <table>
+        <thead>
+          <th>🇺🇸 USD</th>
+          <th>🇨🇦 CAD</th>
+        </thead>
+        <tr>
+          <td>$5.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$10.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$20.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$30.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$40.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$50.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$60.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$70.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$80.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$90.00</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>$100.00</td>
+          <td></td>
+        </tr>
+      </table>
+      <fieldset>
+        <legend>Discount</legend>
+        <div>
+          <input type="radio" id="0" name="discount" value="0" checked />
+          <label for="0">None</label>
+        </div>
+        <div>
+          <input type="radio" id="5" name="discount" value="5" />
+          <label for="5">5% off</label>
+        </div>
+        <div>
+          <input type="radio" id="10" name="discount" value="10" />
+          <label for="10">10% off</label>
+        </div>
+        <div>
+          <input type="radio" id="20" name="discount" value="20" />
+          <label for="20">20% off</label>
+        </div>
+        <div>
+          <input type="radio" id="25" name="discount" value="25" />
+          <label for="25">25% off</label>
+        </div>
+        <div>
+          <input type="radio" id="30" name="discount" value="30" />
+          <label for="30">30% off</label>
+        </div>
+        <div>
+          <input type="radio" id="40" name="discount" value="40" />
+          <label for="40">40% off</label>
+        </div>
+        <div>
+          <input type="radio" id="50" name="discount" value="50" />
+          <label for="50">50% off</label>
+        </div>
+      </fieldset>
+    </div>
+    <script>
+      const EXCHANGE_RATE = 1.3681844;
+      const usdInputEl = document.querySelector("input[type=number]");
+      const outputEl = document.querySelector("output");
+      const discountInputEls = document.querySelectorAll("input[type=radio]");
+
+      usdInputEl.addEventListener("input", () => {
+        convert();
+      });
+
+      usdInputEl.focus();
+
+      const convert = () => {
+        const usdAmount = usdInputEl.value;
+
+        const cadAmount = usdAmount * EXCHANGE_RATE;
+
+        // get the discount amount
+        let discountAmount = 0;
+        discountInputEls.forEach((discountInputEl) => {
+          if (discountInputEl.checked) {
+            discountAmount = Number.parseInt(discountInputEl.value) / 100;
+          }
+        });
+
+        const discountedCadAmount = cadAmount * (1 - discountAmount);
+        // cadAmount - cadAmount discountAmount;
+
+        // render it to the page
+        outputEl.innerHTML = `🇨🇦 $${discountedCadAmount.toFixed(2)} CAD`;
+      };
+
+      // For every TR, get the first TD, parse the number and calculate the value for the second TD
+      const allRows = document.querySelectorAll("tr");
+
+      allRows.forEach((row) => {
+        const cells = row.querySelectorAll("td");
+
+        if (cells.length !== 2) {
+          return;
+        }
+
+        const usdAmount = Number.parseInt(
+          cells[0].textContent.replace("$", ""),
+        );
+        const cadAmount = usdAmount * EXCHANGE_RATE;
+
+        cells[1].innerHTML = `$${cadAmount.toFixed(2)}`;
+      });
+
+      discountInputEls.forEach((discountInputEl) => {
+        discountInputEl.addEventListener("input", () => {
+          convert();
+        });
+      });
+    </script>
+  </body>
+</html>
